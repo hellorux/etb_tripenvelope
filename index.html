@@ -1,12 +1,20 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-  <meta charset="UTF-8" />
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width,initial-scale=1" />
 
-  <!-- IBM Plex Sans -->
-  <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=IBM+Plex+Sans:wght@400;600;700;800&display=swap">
+  <!-- IBM Plex Sans (match Preview Template) -->
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=IBM+Plex+Sans:wght@400;600;700;800;900&display=swap" rel="stylesheet">
 
   <style>
+/* =========================================================
+   ESCAMILLA TOOLS UI v1 — MATCH PREVIEW TEMPLATE
+   IMPORTANT: Print layout remains controlled by your existing
+   inch-based layout rules and @media print.
+   ========================================================= */
 
 /* IBM Plex Sans (headers + labels) */
 #day,
@@ -22,6 +30,7 @@
 }
 
 :root{
+  /* ===== Your existing print tokens (DO NOT CHANGE) ===== */
   --ink:#111;
   --rule:#222;
 
@@ -39,7 +48,7 @@
   --sans: "IBM Plex Sans", system-ui, -apple-system, Segoe UI, Roboto, Helvetica, Arial, sans-serif;
   --mono: ui-monospace,SFMono-Regular,Menlo,Monaco,Consolas,"Liberation Mono",monospace;
 
-  --label-size: 0.105in;  /* tiny bump = cleaner balance */
+  --label-size: 0.105in;
   --tiny-size: 0.096in;
   --input-size: 0.16in;
 
@@ -51,9 +60,70 @@
 
   --section-gap: 0.06in;
 
-  --side-gap: 12px; /* ✅ adjust this number anytime */
+  /* ===== Escamilla Tools UI v1 (SCREEN TOKENS — match Preview) ===== */
+  --font-family: "IBM Plex Sans", Arial, Helvetica, sans-serif;
 
+  --fs-xxs: 10px;
+  --fs-xs:  11px;
+  --fs-sm:  14px;   /* Base body text */
+  --fs-md:  16px;   /* Section headers, buttons */
+  --fs-lg:  18px;   /* Tool title */
 
+  --w-regular: 400;
+  --w-medium:  600;
+  --w-bold:    700;
+  --w-black:   900;
+
+  --s-1: 4px;
+  --s-2: 8px;
+  --s-3: 12px;
+  --s-4: 16px;
+  --s-5: 24px;
+
+  --radius-sm: 8px;
+  --radius-md: 12px;
+  --radius-lg: 16px;
+
+  --bg: #eef1f5;
+  --card: #ffffff;
+  --text: #111827;
+  --muted: #6b7280;
+
+  --ui-border: #d9dde3;
+  --ui-border-strong: #9aa3ad;
+
+  --focus: rgba(78,121,255,0.35);
+
+  --shadow: 0 10px 30px rgba(16,24,40,0.10);
+  --shadow-soft: 0 2px 10px rgba(16,24,40,0.08);
+
+  --app-max: 1100px;
+}
+
+*{ box-sizing:border-box; }
+html, body{ height:100%; }
+
+body{
+  margin:0;
+  background: var(--bg);
+  color: var(--text);
+  font-family: var(--font-family);
+  font-size: var(--fs-sm); /* 14px base */
+  font-weight: var(--w-regular);
+  -webkit-print-color-adjust: exact;
+  print-color-adjust: exact;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+}
+
+/* Match Preview Template helpers */
+.screen-only{ display:block; }
+.print-only{ display:none; }
+
+.app{
+  max-width: var(--app-max);
+  margin: 10px auto 24px;
+  padding: 0 var(--s-3);
 }
 
 /* sample-filled text should look normal (not placeholder blue) */
@@ -63,285 +133,381 @@
   letter-spacing: normal;
 }
 
-*{ box-sizing:border-box; }
-
-body{
-  margin:0;
-  font-family: var(--sans);
-  color: var(--ink);
-  -webkit-print-color-adjust: exact;
-  print-color-adjust: exact;
+/* ---------- STANDARD TOOL HEADER (match Preview) ---------- */
+.tool-header{
+  background: var(--card);
+  border: 1px solid #e3e6eb;
+  border-radius: var(--radius-lg);
+  box-shadow: var(--shadow);
+  padding: var(--s-3) var(--s-4);
+  display: grid;
+  grid-template-columns: auto 1fr auto;
+  align-items: center;
+  gap: var(--s-4);
 }
 
-/* ===== Controls ===== */
-.controls{
+.tool-brand{
+  display:flex;
+  align-items:center;
+  gap: var(--s-2);
+  white-space:nowrap;
+}
+.tool-logo{
+  height: 28px;
+  width:auto;
+}
+
+.tool-title{
   display:flex;
   flex-direction:column;
+  line-height:1.15;
+}
+.tool-title .name{
+  font-size: 18px; /* match Preview Template */
+  font-weight: var(--w-black);
+  letter-spacing: 0.3px;
+  color: var(--text);
+}
+
+/* Buttons / pills match Preview Template */
+.pill{
+  font-size: var(--fs-xs);
+  font-weight: var(--w-black);
+  padding: 5px 9px;
+  border-radius: 999px;
+  border: 1px solid #cfd6de;
+  background: #f7f9fc;
+  color: #111;
+}
+
+.btn{
+  font-family: var(--font-family);
+  font-size: var(--fs-sm);
+  font-weight: 800;
+  padding: 9px 11px;
+  border: 1px solid #cfd6de;
+  background: linear-gradient(#ffffff, #f5f7fa);
+  border-radius: 10px;
+  cursor:pointer;
+  box-shadow: 0 1px 0 rgba(16,24,40,0.03);
+  transition: background 120ms ease, border-color 120ms ease, transform 80ms ease;
+}
+.btn:hover{ background: linear-gradient(#ffffff, #eef2f6); }
+.btn:active{ transform: translateY(1px); }
+.btn:focus{
+  outline:none;
+  box-shadow: 0 0 0 3px var(--focus), 0 1px 0 rgba(16,24,40,0.03);
+  border-color: #7aa0ff;
+}
+.btn:disabled{ opacity:0.6; cursor:not-allowed; transform:none; }
+
+.btn.primary{
+  background: linear-gradient(#1a1a1a, #000);
+  color:#fff;
+  border-color:#111;
+  box-shadow: var(--shadow-soft);
+}
+.btn.primary:hover{ background: linear-gradient(#0f0f0f, #000); }
+
+/* Header actions row (match Preview) */
+.tool-actions{
+  display:flex;
+  gap: var(--s-2);
   align-items:center;
-  gap:6px;
-  padding:12px 10px;
 }
 
-/* top status line */
+/* ---------- Controls (screen-only, match Preview inset) ---------- */
+.controls{
+  display:block;
+  margin: 10px 0 10px;
+  padding: 0;
+}
+
+/* ---------- Quick Actions Sections (Autofill / Trip Date) ---------- */
+.quick-actions-section{
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 8px;
+  width: 100%;
+}
+
+/* Quick Actions labels — match BUSES/DRIVERS side titles */
+.quick-actions-label{
+  font-family: var(--font-family);
+  font-weight: var(--w-black);
+  font-size: var(--fs-xs);
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+  text-align: center;
+  color: #111;
+
+  margin: 0 0 4px;
+}
+
+/* ---------- Quick Actions (Autofill + Date buttons container) ---------- */
+.quick-actions-box{
+  width: 100%;
+  max-width: calc(
+    5.8in + (2 * var(--side-width)) + (2 * var(--side-gap))
+  );
+  margin: 0 auto;
+
+  padding: var(--s-3);
+  display: flex;
+  flex-direction: column;
+  gap: var(--s-2);
+
+  background: var(--card);
+  border: 1px solid #e3e6eb;
+  border-radius: var(--radius-lg);
+  box-shadow: var(--shadow-soft);
+}
+
+/* status line (kept, just styled) */
 .controls-meta{
-  font-size:12px;
-  letter-spacing:0.12em;
-  text-transform:uppercase;
-  color:#444;
+  font-size: var(--fs-xs);
+  font-weight: 800;
+  letter-spacing: 0.10em;
+  text-transform: uppercase;
+  color: var(--muted);
+  margin: 0 0 var(--s-2);
+  text-align:center;
 }
 
-/* button row */
 .controls-buttons{
   display:flex;
   flex-direction:column;
-  gap:8px;               /* space between rows */
+  gap: var(--s-2);
   align-items:center;
 }
 
 .controls-buttons .btn-row{
   display:flex;
-  gap:10px;
+  gap: var(--s-2);
   justify-content:center;
   flex-wrap:wrap;
 }
 
-.controls button{
-  padding:7px 12px;
-  border:1px solid #d6d6d6;
-  background:#fff;
-  border-radius:10px;
-  cursor:pointer;
-  font-weight:700;
+/* Each labeled group inside the quick actions box */
+.quick-actions-group{
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
 }
 
-/* ===== Layout (side lists) ===== */
+/* ---------- Layout (screen framing) ---------- */
 .layout{
   display:flex;
-  justify-content:center;     /* keeps the whole 3-column layout centered */
+  justify-content:center;
   align-items:flex-start;
-  gap: var(--side-gap);       /* ✅ adjustable gap */
-  padding: var(--outer-pad);  /* prevents clipping on the screen edges */
-  flex-wrap: nowrap;          /* prevents drivers dropping weirdly */
+  gap: var(--side-gap);
+  padding: var(--outer-pad);
+  flex-wrap: nowrap;
 }
+
 .side{
-  flex: 0 0 var(--side-width);  /* ✅ fixed width; will NOT collapse */
+  flex: 0 0 var(--side-width);
   width: var(--side-width);
   display:flex;
   flex-direction:column;
   gap:8px;
 
-  max-height: calc(8.1in + 80px);
-  overflow:auto;
+  height: 8.1in;
+  max-height: 8.1in;
+  overflow: hidden; /* prevent whole panel scroll */
 
-  padding-right: 0;             /* ✅ keeps it tight to the envelope */
+  background: var(--card);
+  border: 1px solid #e3e6eb;
+  border-radius: var(--radius-lg);
+  box-shadow: var(--shadow-soft);
+  padding: var(--s-3);
 }
+
 .side-title{
-  font-family: var(--sans);
-  font-weight:800;
-  font-size:12px;
+  font-family: var(--font-family);
+  font-weight: var(--w-black);
+  font-size: var(--fs-xs);
   letter-spacing:0.12em;
   text-align:center;
   margin-bottom:4px;
-}
-/* only style DRIVER buttons by default (NOT bus buttons) */
-.side .driver-btn{
-  padding:8px 6px;
-  border:1px solid #ccc;
-  border-radius:8px;
-  background:#fff;
-  font-weight:700;
-  cursor:pointer;
+  color: #111;
 }
 
-/* ============================= */
-/* DRIVERS – 2 EQUAL COLUMNS     */
-/* toggle aligns with columns    */
-/* ============================= */
-
+/* Driver toggle row = 2 equal columns */
 .driver-grid{
   display:flex;
   flex-direction:column;
   gap:8px;
+
+  /* IMPORTANT: lets the list use remaining space and scroll correctly */
+  flex: 1 1 auto;
+  min-height: 0;
 }
 
-/* Toggle row = 2 equal columns */
 .driver-mode{
   display:grid;
   grid-template-columns: 1fr 1fr;
   gap:8px;
+  flex: 0 0 auto;
 }
 
-/* Toggle buttons fill columns */
+/* Toggle uses pill styling (mode selector, not an action button) */
 .driver-mode .mode{
   width:100%;
-  padding:8px 6px;
-  border:1px solid #ccc;
-  border-radius:8px;
-  background:#fff;
-  font-weight:800;
-  font-size:12px;
-  cursor:pointer;
-  text-align:center;
+  font-family: var(--font-family);
+  font-size: var(--fs-xs);
+  font-weight: var(--w-black);
+  padding: 7px 10px;
+  border-radius: 999px;
+  border: 1px solid #cfd6de;
+  background: #f7f9fc;
+  color: #111;
+  cursor: pointer;
+  box-shadow: 0 1px 0 rgba(16,24,40,0.03);
+  transition: background 120ms ease, border-color 120ms ease, transform 80ms ease;
+  text-align: center;
 }
 
+.driver-mode .mode:hover{
+  background: #eef2f6;
+}
+
+.driver-mode .mode:active{
+  transform: translateY(1px);
+}
+
+.driver-mode .mode:focus{
+  outline: none;
+  box-shadow: 0 0 0 3px var(--focus), 0 1px 0 rgba(16,24,40,0.03);
+  border-color: #7aa0ff;
+}
+
+/* Active pill matches your black/white primary style */
 .driver-mode .mode.active{
-  background:#111;
-  color:#fff;
-  border-color:#111;
+  background: linear-gradient(#1a1a1a, #000);
+  color: #fff;
+  border-color: #111;
+  box-shadow: var(--shadow-soft);
 }
 
-/* Driver buttons = 2 equal columns */
+/* Driver list = vertical column; scrolls ONLY if it exceeds available height */
 #driverList{
-  display: grid;
-  grid-template-columns: repeat(2, minmax(0, 1fr)); /* 🔒 hard equal columns */
+  display: flex;
+  flex-direction: column;
   gap: 8px;
+
+  overflow-y: auto;
+  overflow-x: hidden;
+
+  padding-right: 2px;
+
+  scrollbar-width: none;
+  -ms-overflow-style: none;
+
+  /* OPTIONAL: subtle scroll hint */
+  mask-image: linear-gradient(
+    to bottom,
+    black 90%,
+    transparent 100%
+  );
 }
 
+#driverList::-webkit-scrollbar{
+  display: none; /* Chrome, Safari, Edge */
+}
+
+/* Driver buttons = identical to bus buttons */
 #driverList .driver-btn{
   width: 100%;
-  min-width: 0;          /* 🔒 prevents text-based expansion */
+  min-width: 0;
   box-sizing: border-box;
   text-align: center;
   white-space: nowrap;
 }
 
-/* ===== Bus Buttons ===== */
-.bus-btn{
-  font-weight:600;          /* ← normal / semi-bold */
-  border:1px solid #ccc;
-  border-radius:10px;
-  padding:8px 6px;
+/* All side buttons share the same base look */
+.bus-btn,
+.driver-btn{
+  font-family: var(--font-family);
+  font-size: var(--fs-sm);
+  font-weight: 800;
+  padding: 9px 11px;
+  border: 1px solid #cfd6de;
+  background: linear-gradient(#ffffff, #f5f7fa);
+  border-radius: 10px;
   cursor:pointer;
-}
-
-.bus-btn, .driver-btn, .driver-mode .mode{
+  box-shadow: 0 1px 0 rgba(16,24,40,0.03);
+  transition: background 120ms ease, border-color 120ms ease, transform 80ms ease;
   touch-action: manipulation;
 }
+.bus-btn:hover,
+.driver-btn:hover{ background: linear-gradient(#ffffff, #eef2f6); }
 
-/* Highlight selected bus (disabled) */
-/*
+.bus-btn:active,
+.driver-btn:active{ transform: translateY(1px); }
+
+.bus-btn:focus,
+.driver-btn:focus{
+  outline:none;
+  box-shadow: 0 0 0 3px var(--focus), 0 1px 0 rgba(16,24,40,0.03);
+  border-color: #7aa0ff;
+}
+
+/* Bus buttons use default button styling for consistency */
+/* Color variants intentionally removed */
+
+/* Selected states (keep behavior identical) */
 .bus-btn.selected{
-  box-shadow: inset 0 0 0 1.5px #000;
-}
-*/
-
-.bus-btn:active{
-  transform:scale(0.97);
+  background: linear-gradient(#1a1a1a, #000) !important;
+  color:#fff !important;
+  border-color:#111 !important;
+  box-shadow: var(--shadow-soft);
 }
 
-/* ===== Bus colors (muted, professional) ===== */
-
-/* Charcoal (218, 763) */
-.bus-charcoal{
-  background:#e3e3e3 !important;
-  border-color:#7a7a7a;
-  color:#111;
-}
-
-/* Black (470, 506) */
-.bus-black{
-  background:#dcdcdc !important;
-  border-color:#444;
-  color:#111;
-}
-
-/* Yellow (133) */
-.bus-yellow{
-  background:#fff1b8 !important;
-  border-color:#d6b400;
-  color:#111;
-}
-
-/* Gold (746) */
-.bus-gold{
-  background:#f3e6b3 !important;
-  border-color:#c8a63a;
-  color:#111;
-}
-
-/* Teal (607) */
-.bus-teal{
-  background:#dff2ef !important;
-  border-color:#3b8f86;
-  color:#111;
-}
-
-/* White (897, 898) */
-.bus-white{
-  background:#f9f9f9 !important;
-  border-color:#cfcfcf;
-  color:#111;
-}
-
-/* Red (474) */
-.bus-red{
-  background:#f6dada !important;
-  border-color:#b24a4a;
-  color:#111;
-}
-
-.bus-btn{
-  background: #fff !important;
-  border-color: #ccc !important;
-  color: #111 !important;
-}
-
-/* ===== Selected bus (match outline system) ===== */
-.bus-btn.selected{
-  background: #111 !important;
-  color: #fff !important;
-  border: 1px solid #ccc !important;
-}
-
-/* ===== Highlight selected driver ===== */
-.driver-btn.selected{
-  background: #111;
-  color: #fff;
-  border-color: #111;
-}
-
-/* ===== Selected DRIVER ===== */
+.driver-btn.selected,
 .driver-btn.selected-driver{
-  background:#111;
+  background: linear-gradient(#1a1a1a, #000);
   color:#fff;
   border-color:#111;
+  box-shadow: var(--shadow-soft);
 }
 
-/* ===== Selected CO-DRIVER ===== */
 .driver-btn.selected-codriver{
-  background:#444;
+  background: linear-gradient(#4b5563, #374151);
   color:#fff;
-  border-color:#444;
+  border-color:#374151;
+  box-shadow: var(--shadow-soft);
 }
 
-/* ===== Page ===== */
+/* ---------- Page (print artifact) — DO NOT CHANGE DIMENSIONS ---------- */
 .page{
   width:5.8in;
-  height:8.1in;   /* printer-safe */
+  height:8.1in;
   padding: var(--pad);
-  margin: 0;   /* ✅ let flex handle positioning */
-  overflow: hidden; /* extra safety against spill */
+  margin: 0;
+  overflow: hidden;
+  position:relative;
+  background: transparent;
 }
 
 .panel{
   width:100%;
   height:100%;
   padding: var(--panel-pad);
-  padding-top: calc(var(--panel-pad) + 0.25in); /* top offset */
+  padding-top: calc(var(--panel-pad) + 0.25in);
   padding-bottom: var(--panel-pad);
-
   display:flex;
   flex-direction:column;
   gap: var(--section-gap);
 }
 
-/* ===== Text ===== */
+/* ===== Text (print) ===== */
 .label,.tiny{
   font-family: var(--mono);
   font-weight:700;
   text-transform:uppercase;
   white-space:nowrap;
-
 }
 .label{
   font-size:var(--label-size);
@@ -353,22 +519,21 @@ body{
   opacity:.9;
 }
 
-/* ===== Inputs ===== */
-
+/* ===== Inputs (print inputs unchanged) ===== */
 input::placeholder{
-  color:#8b1e1e;           /* warning red */
-  background:#fde8e8;      /* soft red tint */
+  color:#8b1e1e;
+  background:#fde8e8;
   font-style:bold;
   letter-spacing:0.04em;
   padding:0 2px;
   border-radius:2px;
 }
 #day::placeholder{
-  color:#8b1e1e;           /* same warning red */
-  background:#fde8e8;      /* same soft red tint */
+  color:#8b1e1e;
+  background:#fde8e8;
   font-style:bold;
   letter-spacing:0.04em;
-  padding:0 4px;           /* a little extra so it “reads” like a tag */
+  padding:0 4px;
   border-radius:3px;
 }
 input.edit{
@@ -380,19 +545,17 @@ input.edit{
   width:100%;
   min-height:0.17in;
 }
-input.edit.under{
-  border-bottom: none;
-}
+input.edit.under{ border-bottom: none; }
 input:focus{ outline:none; }
 
-/* ===== Header (FIXED CENTERING) ===== */
+/* ===== Header (print) ===== */
 .header{
   display:flex;
   flex-direction:column;
   align-items:center;
   text-align:center;
   gap:0.04in;
-  margin-bottom: 0.06in; /* NEW: breathing room before section title */
+  margin-bottom: 0.06in;
 }
 #day{
   display:block;
@@ -412,15 +575,15 @@ input:focus{ outline:none; }
   line-height:1.2;
 }
 
-/* ===== Titles ===== */
+/* ===== Titles (print) ===== */
 .section-title{
   text-align:center;
   font-weight:900;
-  letter-spacing:0.14em; /* tighter = sharper print */
+  letter-spacing:0.14em;
   font-size:0.18in;
 }
 
-/* ===== Trip ===== */
+/* ===== Trip (print) ===== */
 .trip{ border: none; }
 .trip-row{
   display:grid;
@@ -451,16 +614,13 @@ input:focus{ outline:none; }
   font-size:var(--label-size);
   letter-spacing:.08em;
 }
-/* ===== Trip + Contact wrapper ===== */
-.trip-contact{
-  border: var(--border) solid var(--rule);
-}
 
-/* remove inner box borders */
+/* Trip + Contact wrapper */
+.trip-contact{ border: var(--border) solid var(--rule); }
 .trip{ border:none; }
-.trip-contact .grid{ border:none; }  /* only the contact grid loses border */
+.trip-contact .grid{ border:none; }
 
-/* ===== Contact (grid rows inside trip-contact) ===== */
+/* Contact grid */
 .grid-row{
   display:grid;
   grid-template-columns:1fr 1fr;
@@ -477,18 +637,17 @@ input:focus{ outline:none; }
 }
 .grid-cell:first-child{ border-left:none; }
 
-/* divider between DESTINATION and CONTACT */
 .trip-contact .grid-row:first-child{
   border-top: var(--border) solid var(--rule);
 }
 
-/* ODOMETER separate box */
+/* Odometer */
 .odometer-box{
   border: var(--border) solid var(--rule);
   margin-top: 0;
 }
 
-/* ===== Expenses ===== */
+/* Expenses */
 .mini{ border: none; }
 
 .mini table{
@@ -496,23 +655,18 @@ input:focus{ outline:none; }
   border-collapse:collapse;
   table-layout:fixed;
   font-family:var(--mono);
-  border: var(--border) solid var(--rule);  /* ✅ ADD THIS */
+  border: var(--border) solid var(--rule);
 }
 .mini tr{ height:var(--exp-row-h); }
 .mini td{
   border: var(--border) solid var(--rule);
   padding:.022in .07in;
   vertical-align:middle;
-
-  /* NOTE TO SELF: ELD FONT SIZE */
-
   font-size:.12in;
-
   line-height:1.05;
   white-space:nowrap;
 }
 
-/* ✅ CLEAN $ COLUMN: no inner underline/box */
 .money{
   display:flex;
   align-items:center;
@@ -527,9 +681,7 @@ input:focus{ outline:none; }
   grid-template-columns:.9in 1fr;
   gap:.08in;
 }
-#notes{ min-height:var(--notes-h); }
 
-/* lock section alignment */
 .trip,
 .grid,
 .mini,
@@ -538,12 +690,11 @@ input:focus{ outline:none; }
   margin-right: 0;
 }
 
-/* === Uniform spacing between major sections === */
 .trip-contact,
 .odometer-box,
 .mini,
 .footer{
-  margin: 0; /* prevent uneven spacing */
+  margin: 0;
 }
 
 .notes-lines{
@@ -555,48 +706,47 @@ input:focus{ outline:none; }
 
 .note-line{
   font-family: var(--mono);
-  font-size: 0.13in;              /* smaller than main inputs */
+  font-size: 0.13in;
   font-weight:700;
-  height:0.16in;                  /* LOCKED LINE HEIGHT */
+  height:0.16in;
   border:none;
   border-bottom: var(--underline);
   padding:0 0.02in;
 }
 
-/* ===== PRINT BOUNDARY DEBUG (TOGGLED) ===== */
+/* Print bounds debug */
 .show-bounds .page{
   outline: 2px dashed red;
   outline-offset: -2px;
 }
-
 .show-bounds .page::after{
   content:"";
   position:absolute;
-  inset: 0.18in; /* SAFE AREA */
+  inset: 0.18in;
   border: 1px dotted blue;
   pointer-events:none;
 }
-/* ===== Envelope preview (screen only) ===== */
+
+/* Envelope preview */
 .show-envelope .page{
-  background: #e9cd86; /* warmer manila */
+  background: #e9cd86;
   background-image:
     radial-gradient(rgba(0,0,0,.035) 1px, transparent 1px),
     linear-gradient(0deg, rgba(255,255,255,.22), rgba(255,255,255,0));
   background-size: 6px 6px, 100% 100%;
 }
+.show-envelope .panel{ background: transparent; }
 
-/* keep text readable */
-.show-envelope .panel{
-  background: transparent;
-}
-
-.page{
-  position:relative;
-}
-
-/* Never print guides */
+/* Print rules */
 @media print{
-  body{ margin:0; }
+  body{
+    background:#fff;
+    color:#000;
+    font-family: var(--font-family);
+  }
+
+  .screen-only{ display:none !important; }
+  .print-only{ display:block !important; }
 
   .layout{
     padding:0;
@@ -609,54 +759,76 @@ input:focus{ outline:none; }
   }
 
   .controls,
-  .side{
-    display:none;
+  .side,
+  .tool-header{
+    display:none !important;
   }
 
-  /* Never print guides */
-  .show-bounds .page{
-    outline:none;
-  }
-  .show-bounds .page::after{
-    content:none;
-  }
+  .show-bounds .page{ outline:none; }
+  .show-bounds .page::after{ content:none; }
 
-  /* Never print envelope preview */
   .show-envelope .page{
     background: transparent !important;
   }
 }
-
-</style>
+  </style>
 </head>
 <body class="show-envelope">
+  <div class="app">
 
-<div class="controls">
-  <div class="controls-meta">Paper A5 · Scale Default · Margins Default</div>
-
-  <div class="controls-buttons">
-  <!-- Row 1: utilities -->
-  <div class="btn-row">
-    <button type="button" onclick="safePrint()">Print</button>
-    <button type="button" onclick="clearAll()">Clear Form</button>
-    <button type="button" onclick="toggleBounds()">Show Print Bounds</button>
-    <button type="button" onclick="toggleEnvelope()">Envelope Preview</button>
+    <header class="tool-header">
+  <div class="tool-brand">
+    <img src="logo.png" alt="Escamilla Tour Buses" class="tool-logo">
   </div>
 
-  <!-- Row 2: quick fill -->
-  <div class="btn-row">
-  <button type="button" onclick="loadSample()">Kickapoo Trip</button>
+  <div class="tool-title">
+    <div class="name">TRIP ENVELOPE CREATOR</div>
+  </div>
 
-  <button type="button" onclick="fillToday()">Today</button>
-  <button type="button" onclick="fillTomorrow()">Tomorrow</button>
+  <div class="tool-actions">
+    <button class="btn" type="button" onclick="clearAll()">Clear</button>
+    <button class="btn" type="button" onclick="toggleBounds()">Print Bounds</button>
+    <button class="btn" type="button" onclick="toggleEnvelope()">Preview</button>
+    <button class="btn" type="button" onclick="safePrint()">Print</button>
+  </div>
+</header>
 
-  <button type="button" onclick="fillNextWeekday(6)">Saturday</button>
-  <button type="button" onclick="fillNextWeekday(0)">Sunday</button>
-  <button type="button" onclick="fillNextWeekday(1)">Monday</button>
+
+    <div class="controls screen-only">
+      <div class="controls-meta">Paper A5 · Scale Default · Margins Default</div>
+
+<div class="quick-actions-box">
+
+  <!-- Autofill -->
+  <div class="quick-actions-section">
+    <div class="quick-actions-label">Autofill</div>
+<div class="btn-row">
+  <button class="btn" type="button" onclick="loadAutofill1()">Kickapoo Trip</button>
+  <button class="btn" type="button" onclick="loadAutofill2()">Paragon Trip</button>
+  <button class="btn" type="button" onclick="loadAutofill3()">Autofill 3</button>
+  <button class="btn" type="button" onclick="loadAutofill4()">Autofill 4</button>
+  <button class="btn" type="button" onclick="loadAutofill5()">Autofill 5</button>
 </div>
+  </div>
+
+  <!-- Trip Date -->
+  <div class="quick-actions-section">
+    <div class="quick-actions-label">Trip Date</div>
+    <div class="btn-row">
+      <button class="btn" type="button" onclick="fillToday()">Today</button>
+      <button class="btn" type="button" onclick="fillTomorrow()">Tomorrow</button>
+      <button class="btn" type="button" onclick="fillNextWeekday(6)">Saturday</button>
+      <button class="btn" type="button" onclick="fillNextWeekday(0)">Sunday</button>
+      <button class="btn" type="button" onclick="fillNextWeekday(1)">Monday</button>
+    </div>
+  </div>
+
 </div>
+
 </div>
-<div class="layout">
+    </div>
+
+    <div class="layout">
 
   <!-- LEFT: BUS LIST -->
 <aside class="side side-left">
@@ -967,7 +1139,7 @@ function loadSample(){
   pickup.classList.add('sample-fill');
 
   const dest = document.getElementById('destination');
-  dest.value = 'KICKAPOO CASINO: 794 LUCKY EAGLE DR, EAGLE PASS, TX 78852';
+  dest.value = 'KICKAPOO CASINO 794 LUCKY EAGLE DR, EAGLE PASS, TX 78852';
   dest.classList.add('sample-fill');
 
   const contact = document.getElementById('contact');
@@ -977,6 +1149,183 @@ function loadSample(){
   const phone = document.getElementById('phone');
   phone.value = '(956) 994-1169';
   phone.classList.add('sample-fill');
+}
+
+function loadAutofill1(){
+  document.querySelectorAll('.sample-fill')
+    .forEach(el => el.classList.remove('sample-fill'));
+
+  const arrival = document.getElementById('arrivaltime');
+  if(arrival){
+    arrival.value = '4:30 AM';
+    arrival.classList.add('sample-fill');
+  }
+
+  const pickup = document.getElementById('pickup');
+  if(pickup){
+    pickup.value = '2801 ZINNIA AVE, MCALLEN, TX 78504';
+    pickup.classList.add('sample-fill');
+  }
+
+  const dest = document.getElementById('destination');
+  if(dest){
+    dest.value = 'KICKAPOO CASINO 794 LUCKY EAGLE DR, EAGLE PASS, TX 78852';
+    dest.classList.add('sample-fill');
+  }
+
+  const contact = document.getElementById('contact');
+  if(contact){
+    contact.value = 'HECTOR ESCAMILLA';
+    contact.classList.add('sample-fill');
+  }
+
+  const phone = document.getElementById('phone');
+  if(phone){
+    phone.value = '(956) 994-1169';
+    phone.classList.add('sample-fill');
+  }
+}
+
+/* Autofill 2 — example trip (edit values later) */
+function loadAutofill2(){
+  document.querySelectorAll('.sample-fill')
+    .forEach(el => el.classList.remove('sample-fill'));
+
+  const arrival = document.getElementById('arrivaltime');
+  if(arrival){
+    arrival.value = '4:30 AM';
+    arrival.classList.add('sample-fill');
+  }
+
+  const pickup = document.getElementById('pickup');
+  if(pickup){
+    pickup.value = '2801 ZINNIA AVE, MCALLEN, TX 78504';
+    pickup.classList.add('sample-fill');
+  }
+
+  const dest = document.getElementById('destination');
+  if(dest){
+    dest.value = 'PARAGON CASINO 711 PARAGON PL, MARKSVILLE, LA 71351';
+    dest.classList.add('sample-fill');
+  }
+
+  const contact = document.getElementById('contact');
+  if(contact){
+    contact.value = 'ASHLEY PEARL';
+    contact.classList.add('sample-fill');
+  }
+
+  const phone = document.getElementById('phone');
+  if(phone){
+    phone.value = '(956) 994-1169';
+    phone.classList.add('sample-fill');
+  }
+}
+/* Autofill 3 — example trip (edit values later) */
+function loadAutofill3(){
+  document.querySelectorAll('.sample-fill')
+    .forEach(el => el.classList.remove('sample-fill'));
+
+  const arrival = document.getElementById('arrivaltime');
+  if(arrival){
+    arrival.value = '10:00 AM';
+    arrival.classList.add('sample-fill');
+  }
+
+  const pickup = document.getElementById('pickup');
+  if(pickup){
+    pickup.value = 'MCALLEN, TX (ENTER PICKUP ADDRESS)';
+    pickup.classList.add('sample-fill');
+  }
+
+  const dest = document.getElementById('destination');
+  if(dest){
+    dest.value = 'AUSTIN, TX (ENTER DESTINATION)';
+    dest.classList.add('sample-fill');
+  }
+
+  const contact = document.getElementById('contact');
+  if(contact){
+    contact.value = 'DISPATCH (ENTER CONTACT)';
+    contact.classList.add('sample-fill');
+  }
+
+  const phone = document.getElementById('phone');
+  if(phone){
+    phone.value = '(956) 000-0000';
+    phone.classList.add('sample-fill');
+  }
+}
+
+/* Autofill 4 — example trip (edit values later) */
+function loadAutofill4(){
+  document.querySelectorAll('.sample-fill')
+    .forEach(el => el.classList.remove('sample-fill'));
+
+  const arrival = document.getElementById('arrivaltime');
+  if(arrival){
+    arrival.value = '6:00 PM';
+    arrival.classList.add('sample-fill');
+  }
+
+  const pickup = document.getElementById('pickup');
+  if(pickup){
+    pickup.value = 'MCALLEN, TX (ENTER PICKUP ADDRESS)';
+    pickup.classList.add('sample-fill');
+  }
+
+  const dest = document.getElementById('destination');
+  if(dest){
+    dest.value = 'DALLAS, TX (ENTER DESTINATION)';
+    dest.classList.add('sample-fill');
+  }
+
+  const contact = document.getElementById('contact');
+  if(contact){
+    contact.value = 'DISPATCH (ENTER CONTACT)';
+    contact.classList.add('sample-fill');
+  }
+
+  const phone = document.getElementById('phone');
+  if(phone){
+    phone.value = '(956) 000-0000';
+    phone.classList.add('sample-fill');
+  }
+}
+/* Autofill 5 — placeholder (edit values later) */
+function loadAutofill5(){
+  document.querySelectorAll('.sample-fill')
+    .forEach(el => el.classList.remove('sample-fill'));
+
+  const arrival = document.getElementById('arrivaltime');
+  if(arrival){
+    arrival.value = '8:00 AM';
+    arrival.classList.add('sample-fill');
+  }
+
+  const pickup = document.getElementById('pickup');
+  if(pickup){
+    pickup.value = '2801 ZINNIA AVE, MCALLEN, TX 78504';
+    pickup.classList.add('sample-fill');
+  }
+
+  const dest = document.getElementById('destination');
+  if(dest){
+    dest.value = 'AUTOFILL 5 DESTINATION (EDIT LATER)';
+    dest.classList.add('sample-fill');
+  }
+
+  const contact = document.getElementById('contact');
+  if(contact){
+    contact.value = 'AUTOFILL 5 CONTACT (EDIT LATER)';
+    contact.classList.add('sample-fill');
+  }
+
+  const phone = document.getElementById('phone');
+  if(phone){
+    phone.value = '(956) 000-0000';
+    phone.classList.add('sample-fill');
+  }
 }
 
 function clearAll(){
