@@ -34,9 +34,15 @@
   --ink:#111;
   --rule:#222;
 
-  --side-gap: 12px;      /* ✅ adjust this to move BUS/DRIVERS closer/farther */
+    --side-gap: 16px;      /* ✅ matches design template spacing feel (like --s-4) */
   --side-width: 200px;   /* width of BUS / DRIVERS columns */
   --outer-pad: 10px;     /* padding around the whole layout */
+    /* ✅ shared frame width so Autofill + Layout outer edges match perfectly */
+  --frame-width: calc(5.83in + (2 * var(--side-width)) + (2 * var(--side-gap)));
+  
+  --env-w: 5.83in;
+  --env-h: 8.27in;
+
 
   /* single unified line weight */
   --border: 1px;
@@ -248,9 +254,12 @@ body{
 /* ---------- Quick Actions (Autofill + Date buttons container) ---------- */
 .quick-actions-box{
   width: 100%;
-  max-width: calc(
-    5.8in + (2 * var(--side-width)) + (2 * var(--side-gap))
-  );
+
+  /* Match the OUTER EDGES of the BUS/ENVELOPE/DRIVERS columns.
+     The layout has padding (--outer-pad) inside --frame-width,
+     so we subtract it here to align to the same left/right edges. */
+  max-width: calc(var(--frame-width) - (2 * var(--outer-pad)));
+
   margin: 0 auto;
 
   padding: var(--s-3);
@@ -302,6 +311,12 @@ body{
   justify-content:center;
   align-items:flex-start;
   gap: var(--side-gap);
+
+  /* 🔒 lock layout to the SAME frame as Autofill */
+  width: var(--frame-width);
+  max-width: var(--frame-width);
+
+  margin: 0 auto;
   padding: var(--outer-pad);
   flex-wrap: nowrap;
 }
@@ -309,13 +324,14 @@ body{
 .side{
   flex: 0 0 var(--side-width);
   width: var(--side-width);
+
+  height: var(--env-h);          /* ✅ EXACT match to envelope height */
+
   display:flex;
   flex-direction:column;
-  gap:8px;
+  gap: 8px;
 
-  height: 8.1in;
-  max-height: 8.1in;
-  overflow: hidden; /* prevent whole panel scroll */
+  overflow: hidden;              /* ✅ panel stays fixed; inner list can scroll */
 
   background: var(--card);
   border: 1px solid #e3e6eb;
@@ -333,6 +349,20 @@ body{
   margin-bottom:4px;
   color: #111;
 }
+
+.bus-list{
+  display:flex;
+  flex-direction:column;
+  gap:8px;
+
+  flex: 1 1 auto;     /* ✅ fills remaining height inside side panel */
+  min-height: 0;      /* ✅ required for scrolling in flex children */
+  overflow-y: auto;
+
+  scrollbar-width: none;
+  -ms-overflow-style: none;
+}
+.bus-list::-webkit-scrollbar{ display:none; }
 
 /* Driver toggle row = 2 equal columns */
 .driver-grid{
@@ -482,12 +512,10 @@ body{
 
 /* ---------- Page (print artifact) — DO NOT CHANGE DIMENSIONS ---------- */
 .page{
-  width: 5.83in !important;   /* A5 width */
-  height: 8.27in !important;  /* A5 height */
-
-  /* Visually center on a 6x9 envelope */
+  width: var(--env-w) !important;
+  height: var(--env-h) !important;
   margin: 0 auto !important;
-  transform: translateY(0.35in);
+  transform: none !important;
 
   page-break-after: auto !important;
   page-break-inside: avoid !important;
@@ -865,20 +893,22 @@ input:focus{ outline:none; }
 <aside class="side side-left">
   <div class="side-title">BUSES</div>
 
-  <button class="bus-btn bus-charcoal" type="button" onclick="setBus('218', this)">218</button>
-  <button class="bus-btn bus-charcoal" type="button" onclick="setBus('763', this)">763</button>
+  <div class="bus-list">
+    <button class="bus-btn bus-charcoal" type="button" onclick="setBus('218', this)">218</button>
+    <button class="bus-btn bus-charcoal" type="button" onclick="setBus('763', this)">763</button>
 
-  <button class="bus-btn bus-black" type="button" onclick="setBus('470', this)">470</button>
-  <button class="bus-btn bus-yellow" type="button" onclick="setBus('133', this)">133</button>
-  <button class="bus-btn bus-black" type="button" onclick="setBus('506', this)">506</button>
+    <button class="bus-btn bus-black" type="button" onclick="setBus('470', this)">470</button>
+    <button class="bus-btn bus-yellow" type="button" onclick="setBus('133', this)">133</button>
+    <button class="bus-btn bus-black" type="button" onclick="setBus('506', this)">506</button>
 
-  <button class="bus-btn bus-gold" type="button" onclick="setBus('746', this)">746</button>
-  <button class="bus-btn bus-teal" type="button" onclick="setBus('607', this)">607</button>
+    <button class="bus-btn bus-gold" type="button" onclick="setBus('746', this)">746</button>
+    <button class="bus-btn bus-teal" type="button" onclick="setBus('607', this)">607</button>
 
-  <button class="bus-btn bus-white" type="button" onclick="setBus('897', this)">897</button>
-  <button class="bus-btn bus-white" type="button" onclick="setBus('898', this)">898</button>
+    <button class="bus-btn bus-white" type="button" onclick="setBus('897', this)">897</button>
+    <button class="bus-btn bus-white" type="button" onclick="setBus('898', this)">898</button>
 
-  <button class="bus-btn bus-red" type="button" onclick="setBus('474', this)">474</button>
+    <button class="bus-btn bus-red" type="button" onclick="setBus('474', this)">474</button>
+  </div>
 </aside>
 
   <div class="page">
