@@ -25,7 +25,7 @@
 }
 
 @page{
-  size: 5.8in 8.3in;
+  size: 6in 9in;
   margin: 0;
 }
 
@@ -482,13 +482,17 @@ body{
 
 /* ---------- Page (print artifact) — DO NOT CHANGE DIMENSIONS ---------- */
 .page{
-  width:5.8in;
-  height:8.1in;
-  padding: var(--pad);
-  margin: 0;
-  overflow: hidden;
-  position:relative;
-  background: transparent;
+  width: 5.83in !important;   /* A5 width */
+  height: 8.27in !important;  /* A5 height */
+
+  /* Visually center on a 6x9 envelope */
+  margin: 0 auto !important;
+  transform: translateY(0.35in);
+
+  page-break-after: auto !important;
+  page-break-inside: avoid !important;
+  break-inside: avoid !important;
+  overflow: hidden !important;
 }
 
 .panel{
@@ -496,7 +500,10 @@ body{
   height:100%;
   padding: var(--panel-pad);
   padding-top: calc(var(--panel-pad) + 0.25in);
-  padding-bottom: var(--panel-pad);
+
+  /* Keep NOTES inside the Print Bounds safe zone */
+  padding-bottom: calc(var(--panel-pad) + 0.18in);
+
   display:flex;
   flex-direction:column;
   gap: var(--section-gap);
@@ -706,12 +713,13 @@ input:focus{ outline:none; }
 
 .note-line{
   font-family: var(--mono);
-  font-size: 0.13in;
-  font-weight:700;
+  font-size: 0.12in;      /* slightly smaller than structured fields */
+  font-weight:600;       /* lighter than labels, matches “notes” intent */
   height:0.16in;
   border:none;
   border-bottom: var(--underline);
   padding:0 0.02in;
+  opacity:0.9;           /* subtle de-emphasis */
 }
 
 /* Print bounds debug */
@@ -720,11 +728,7 @@ input:focus{ outline:none; }
   outline-offset: -2px;
 }
 .show-bounds .page::after{
-  content:"";
-  position:absolute;
-  inset: 0.18in;
-  border: 1px dotted blue;
-  pointer-events:none;
+  content:none; /* ✅ remove inner safe zone line */
 }
 
 /* Envelope preview */
@@ -739,24 +743,17 @@ input:focus{ outline:none; }
 
 /* Print rules */
 @media print{
-  body{
-    background:#fff;
-    color:#000;
+  html, body{
+    margin: 0 !important;
+    padding: 0 !important;
+    background:#fff !important;
+    color:#000 !important;
     font-family: var(--font-family);
   }
 
+  /* Keep ONLY the envelope printing */
   .screen-only{ display:none !important; }
   .print-only{ display:block !important; }
-
-  .layout{
-    padding:0;
-    gap:0;
-  }
-
-  .page{
-    page-break-after: avoid;
-    page-break-inside: avoid;
-  }
 
   .controls,
   .side,
@@ -764,8 +761,42 @@ input:focus{ outline:none; }
     display:none !important;
   }
 
-  .show-bounds .page{ outline:none; }
-  .show-bounds .page::after{ content:none; }
+  /* Remove screen wrapper spacing that can create an extra blank page */
+  .app{
+    max-width: none !important;
+    margin: 0 !important;
+    padding: 0 !important;
+  }
+
+  /* Center the envelope area inside the 6x9 printed sheet */
+  .layout{
+    margin: 0 !important;
+    padding: 0 !important;
+    gap: 0 !important;
+
+    display: flex !important;
+    justify-content: center !important;
+    align-items: center !important;
+
+    /* Make the flex box match the physical page so centering is stable */
+    width: 6in !important;
+    height: 9in !important;
+  }
+
+  /* Keep your envelope content as A5-sized inside the 6x9 sheet */
+  .page{
+    width: 5.83in !important;   /* A5 width */
+    height: 8.27in !important;  /* A5 height */
+    margin: 0 !important;
+
+    page-break-after: auto !important;
+    page-break-inside: avoid !important;
+    break-inside: avoid !important;
+    overflow: hidden !important;
+  }
+
+  .show-bounds .page{ outline:none !important; }
+  .show-bounds .page::after{ content:none !important; }
 
   .show-envelope .page{
     background: transparent !important;
