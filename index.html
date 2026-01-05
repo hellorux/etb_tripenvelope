@@ -915,16 +915,19 @@ input:focus{ outline:none; }
 
     <!-- DATE/TIME row -->
     <div class="trip-row cols-2">
-  <div class="trip-cell">
-    <span class="label">TRIP DATE</span>
-    <input id="tripdate" class="edit under" placeholder="CHOOSE DATE">
-  </div>
-  <div class="trip-cell">
-    <span class="label">ARRIVAL TIME</span>
-    <input id="arrivaltime" class="edit under" placeholder="ENTER ARRIVAL TIME">
-
-  </div>
-</div>
+      <div class="trip-cell">
+        <span class="label">TRIP DATE <span style="font-weight:900; font-size:0.11in;">/ RETURN</span></span>
+        <div style="display:flex; align-items:center; justify-content:center; gap:0.15in; width:100%;">
+          <input id="tripdate" class="edit under" placeholder="CHOOSE DATE" style="flex:1; text-align:center; min-width:1.2in; max-width:1.6in;">
+          <span style="font-weight:700; font-size:0.13in; margin:0 2px; display:inline-block; min-width:0.18in; text-align:center;">-</span>
+          <input id="returndate" class="edit under" style="flex:1; text-align:center; min-width:1.2in; max-width:1.6in;">
+        </div>
+      </div>
+      <div class="trip-cell">
+        <span class="label">ARRIVAL TIME</span>
+        <input id="arrivaltime" class="edit under" placeholder="ENTER ARRIVAL TIME">
+      </div>
+    </div>
 
     <!-- PICKUP -->
     <div class="trip-row cols-1">
@@ -1418,6 +1421,7 @@ function saveToSheet(){
   const rowData = {
     day: document.getElementById('day').value,
     tripdate: document.getElementById('tripdate').value,
+    returndate: document.getElementById('returndate') ? document.getElementById('returndate').value : '',
     busno: document.getElementById('busno').value,
     driver: document.getElementById('driver').value,
     codriver: document.getElementById('codriver').value,
@@ -1546,6 +1550,9 @@ function loadFromSheet(){
     
     document.getElementById('day').value = envelope['Day'] || '';
     document.getElementById('tripdate').value = formatDate(envelope['Trip Date']);
+    if(document.getElementById('returndate')){
+      document.getElementById('returndate').value = formatDate(envelope['Return Date'] || envelope['returndate'] || '');
+    }
     document.getElementById('busno').value = envelope['Bus #'] || '';
     document.getElementById('driver').value = envelope['Driver'] || '';
     document.getElementById('codriver').value = envelope['Co-Driver'] || '';
