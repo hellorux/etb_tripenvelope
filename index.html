@@ -814,8 +814,10 @@ input:focus{ outline:none; }
 
   <div class="tool-actions">
     <button class="btn" type="button" onclick="clearAll()">Clear</button>
-    <button class="btn" type="button" onclick="toggleBounds()">Print Bounds</button>
+    <button class="btn" type="button" onclick="loadFromSheet()">Load</button>
     <button class="btn" type="button" onclick="toggleEnvelope()">Preview</button>
+    <button class="btn" type="button" onclick="toggleBounds()">Print Bounds</button>
+    <button class="btn primary" type="button" onclick="saveToSheet()">Save</button>
     <button class="btn" type="button" onclick="safePrint()">Print</button>
   </div>
 </header>
@@ -1378,6 +1380,183 @@ function safePrint(){
   }
 
   window.print();
+}
+
+// Google Sheets Integration
+// Replace this URL with your Google Apps Script deployment URL
+const GOOGLE_APPS_SCRIPT_URL = 'https://script.google.com/macros/s/AKfycbywdzzwTUpP_Mkw3BLRTSxLsStJuzeSNI-4zbeIXSZcjirB5-dhHpOXDc0fUVfoZHrk/exec'; // Same URL as your existing Trips API
+
+function saveToSheet(){
+  const requiredIds = [
+    'day','tripdate','busno','driver',
+    'arrivaltime','pickup','destination','contact','phone'
+  ];
+
+  const missing = requiredIds.filter(id=>{
+    const el = document.getElementById(id);
+    return !el || !el.value.trim();
+  });
+
+  if(missing.length){
+    alert(
+      "⚠️ Missing required fields.\n\n" +
+      "Fill in all red-placeholder fields before saving."
+    );
+    return;
+  }
+
+  if(!GOOGLE_APPS_SCRIPT_URL || GOOGLE_APPS_SCRIPT_URL === 'YOUR_APPS_SCRIPT_DEPLOYMENT_URL_HERE'){
+    alert('⚠️ Google Apps Script URL not configured.\n\nPlease follow the setup instructions.');
+    return;
+  }
+
+  // Collect form data
+  const formData = {
+    action: "envelope_save",
+    row: {
+      day: document.getElementById('day').value,
+      tripdate: document.getElementById('tripdate').value,
+      busno: document.getElementById('busno').value,
+      driver: document.getElementById('driver').value,
+      codriver: document.getElementById('codriver').value,
+      arrivaltime: document.getElementById('arrivaltime').value,
+      pickup: document.getElementById('pickup').value,
+      destination: document.getElementById('destination').value,
+      contact: document.getElementById('contact').value,
+      phone: document.getElementById('phone').value,
+      startodo: document.getElementById('startodo').value,
+      endodo: document.getElementById('endodo').value,
+      notes1: document.getElementById('notes1').value,
+      notes2: document.getElementById('notes2').value,
+      notes3: document.getElementById('notes3').value
+    }
+  };
+
+  // Send to Google Sheet
+  fetch(GOOGLE_APPS_SCRIPT_URL, {
+    method: 'POST',
+    body: JSON.stringify(formData)
+  })
+  .then(response => response.json())
+  .then(data => {
+    if(data.ok){
+      alert('✅ Trip saved successfully!');
+    } else {
+      alert('❌ Error: ' + (data.error || data.message || 'Unknown error'));
+    }
+  })
+  .catch(error => {
+    alert('❌ Error saving to sheet:\n' + error);
+  });
+}
+
+function loadFromSheet(){
+  if(!GOOGLE_APPS_SCRIPT_URL || GOOGLE_APPS_SCRIPT_URL === 'YOUR_APPS_SCRIPT_DEPLOYMENT_URL_HERE'){
+    alert('⚠️ Google Apps Script URL not configured.');
+    return;
+  }
+
+  // Fetch all envelopes
+  fetch(GOOGLE_APPS_SCRIPT_URL + '?action=envelopes')
+  .then(response => response.json())
+  .then(data => {
+    if(!data.ok || !data.rows || data.rows.length === 0){
+      alert('No saved envelopes found.');
+      return;
+    }
+
+    // Create a selection dialog
+    let options = 'Select an envelope to load:\n\n';
+    data.rows.forEach((row, index) => {
+      // Clean up day name
+      const dayRaw = row['Day'] || '?';
+      const day = dayRaw.toString().substring(0, 3).toUpperCase(); // MON, TUE, etc.
+      
+      // Clean up date - handle both string and Date object
+      const dateRaw = row['Trip Date'] || '';
+      let shortDate = '?';
+      if(dateRaw){
+        if(typeof dateRaw === 'string' && dateRaw.includes('/')){
+          // Already formatted as MM/DD/YYYY, extract MM/DD
+          shortDate = dateRaw.substring(0, 5);
+        } else {
+          // It's a Date object or timestamp, parse it
+          const d = new Date(dateRaw);
+          if(!isNaN(d.getTime())){
+            const mm = String(d.getMonth() + 1).padStart(2, '0');
+            const dd = String(d.getDate()).padStart(2, '0');
+            shortDate = `${mm}/${dd}`;
+          }
+        }
+      }
+      
+      const bus = row['Bus #'] || '?';
+      const driver = row['Driver'] || '?';
+      const dest = row['Destination'] || '?';
+      const shortDest = dest.split(' ').slice(0, 2).join(' ').toUpperCase(); // First 2 words
+      
+      options += `${index + 1}. ${day} ${shortDate} - Bus ${bus} - ${driver} - ${shortDest}\n`;
+    });
+    
+    const selection = prompt(options + '\nEnter number (1-' + data.rows.length + '):');;;
+    
+    if(!selection) return;
+    
+    const index = parseInt(selection) - 1;
+    if(index < 0 || index >= data.rows.length){
+      alert('Invalid selection.');
+      return;
+    }
+
+    // Load the selected envelope
+    const envelope = data.rows[index];
+    
+    // Helper function to format dates
+    function formatDate(val) {
+      if (!val) return '';
+      if (typeof val === 'string' && val.includes('/')) return val; // Already formatted
+      const d = new Date(val);
+      if (isNaN(d.getTime())) return val; // Not a valid date
+      const mm = String(d.getMonth() + 1).padStart(2, '0');
+      const dd = String(d.getDate()).padStart(2, '0');
+      const yyyy = d.getFullYear();
+      return `${mm}/${dd}/${yyyy}`;
+    }
+    
+    // Helper function to format times
+    function formatTime(val) {
+      if (!val) return '';
+      if (typeof val === 'string' && !val.includes('T')) return val; // Already formatted (e.g., "4:30 AM")
+      const d = new Date(val);
+      if (isNaN(d.getTime())) return val; // Not a valid time
+      let hours = d.getHours();
+      const minutes = String(d.getMinutes()).padStart(2, '0');
+      const ampm = hours >= 12 ? 'PM' : 'AM';
+      hours = hours % 12 || 12; // Convert to 12-hour format
+      return `${hours}:${minutes} ${ampm}`;
+    }
+    
+    document.getElementById('day').value = envelope['Day'] || '';
+    document.getElementById('tripdate').value = formatDate(envelope['Trip Date']);
+    document.getElementById('busno').value = envelope['Bus #'] || '';
+    document.getElementById('driver').value = envelope['Driver'] || '';
+    document.getElementById('codriver').value = envelope['Co-Driver'] || '';
+    document.getElementById('arrivaltime').value = formatTime(envelope['Arrival Time']);
+    document.getElementById('pickup').value = envelope['Pickup'] || '';
+    document.getElementById('destination').value = envelope['Destination'] || '';
+    document.getElementById('contact').value = envelope['Contact'] || '';
+    document.getElementById('phone').value = envelope['Phone'] || '';
+    document.getElementById('startodo').value = envelope['Starting Odometer'] || '';
+    document.getElementById('endodo').value = envelope['Ending Odometer'] || '';
+    document.getElementById('notes1').value = envelope['Notes 1'] || '';
+    document.getElementById('notes2').value = envelope['Notes 2'] || '';
+    document.getElementById('notes3').value = envelope['Notes 3'] || '';
+
+    alert('✅ Envelope loaded successfully!');
+  })
+  .catch(error => {
+    alert('❌ Error loading from sheet:\n' + error);
+  });
 }
 
 function sortDriversAlphabetically(){
