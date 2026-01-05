@@ -1485,34 +1485,22 @@ function loadFromSheet(){
     // Create a selection dialog
     let options = 'Select an envelope to load:\n\n';
     data.rows.forEach((row, index) => {
-      // Clean up day name
-      const dayRaw = row['Day'] || '?';
-      const day = dayRaw.toString().substring(0, 3).toUpperCase(); // MON, TUE, etc.
-      
-      // Clean up date - handle both string and Date object
+      // Get trip date and parse to get day name
       const dateRaw = row['Trip Date'] || '';
-      let shortDate = '?';
-      if(dateRaw){
-        if(typeof dateRaw === 'string' && dateRaw.includes('/')){
-          // Already formatted as MM/DD/YYYY, extract MM/DD
-          shortDate = dateRaw.substring(0, 5);
-        } else {
-          // It's a Date object or timestamp, parse it
-          const d = new Date(dateRaw);
-          if(!isNaN(d.getTime())){
-            const mm = String(d.getMonth() + 1).padStart(2, '0');
-            const dd = String(d.getDate()).padStart(2, '0');
-            shortDate = `${mm}/${dd}`;
-          }
+      let dayText = '?';
+      let tripDateStr = '?';
+      if (dateRaw) {
+        const d = new Date(dateRaw);
+        if (!isNaN(d.getTime())) {
+          // Get day name in uppercase (e.g., MONDAY)
+          dayText = d.toLocaleDateString('en-US', { weekday: 'long' }).toUpperCase();
+          // Format date as YYYY-MM-DD
+          tripDateStr = d.toISOString().slice(0, 10);
         }
       }
-      
       const bus = row['Bus #'] || '?';
       const driver = row['Driver'] || '?';
-      const dest = row['Destination'] || '?';
-      const shortDest = dest.split(' ').slice(0, 2).join(' ').toUpperCase(); // First 2 words
-      
-      options += `${index + 1}. ${day} ${shortDate} - Bus ${bus} - ${driver} - ${shortDest}\n`;
+      options += `${index + 1}. ${dayText} ${tripDateStr} – ${bus} – ${driver}\n`;
     });
     
     const selection = prompt(options + '\nEnter number (1-' + data.rows.length + '):');;;
