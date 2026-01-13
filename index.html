@@ -1,7 +1,6 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-  <title>Envelope Creator</title>
   <meta charset="utf-8" />
   <meta name="viewport" content="width=device-width,initial-scale=1" />
 
@@ -31,10 +30,24 @@
 }
 
 :root{
+
+  
+    /* Default button tokens */
+    --btn-bg: #6b7280;
+    --btn-color: #fff;
+    --btn-border: #6b7280;
+    --btn-radius: 10px;
+    --btn-padding: 12px 24px;
+    --btn-font-weight: 600;
+    --btn-shadow: 0 1px 4px rgba(0,0,0,0.08);
+    --btn-hover-shadow: 0 2px 8px rgba(0,0,0,0.12);
+    --btn-hover-color: #fff;
+    --btn-hover-bg: #4b5563;
+    --btn-hover-border: #4b5563;
   /* ===== Your existing print tokens (DO NOT CHANGE) ===== */
   --ink:#111;
   --rule:#222;
-
+  --sans: 'Motiva Sans', Arial, Helvetica, sans-serif;
   --side-gap: 12px;      /* ✅ adjust this to move BUS/DRIVERS closer/farther */
   --side-width: 200px;   /* width of BUS / DRIVERS columns */
   --outer-pad: 10px;     /* padding around the whole layout */
@@ -46,12 +59,13 @@
   --panel-pad: 0.10in;
   --footer-safe: 0in;
 
-  --sans: "IBM Plex Sans", system-ui, -apple-system, Segoe UI, Roboto, Helvetica, Arial, sans-serif;
-  --mono: ui-monospace,SFMono-Regular,Menlo,Monaco,Consolas,"Liberation Mono",monospace;
+
+  --sans: -apple-system, BlinkMacSystemFont, "Segoe UI", "IBM Plex Sans", Arial, Helvetica, sans-serif;
+  --mono: -apple-system, BlinkMacSystemFont, "Segoe UI", "IBM Plex Sans", Arial, Helvetica, sans-serif;
 
   --label-size: 0.105in;
   --tiny-size: 0.096in;
-  --input-size: 0.16in;
+  --font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", "IBM Plex Sans", Arial, Helvetica, sans-serif;
 
   --underline: 1px dotted rgba(0,0,0,.35);
 
@@ -62,7 +76,7 @@
   --section-gap: 0.06in;
 
   /* ===== Escamilla Tools UI v1 (SCREEN TOKENS — match Preview) ===== */
-  --font-family: "IBM Plex Sans", Arial, Helvetica, sans-serif;
+  --font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", "IBM Plex Sans", Arial, Helvetica, sans-serif;
 
   --fs-xxs: 10px;
   --fs-xs:  11px;
@@ -70,10 +84,10 @@
   --fs-md:  16px;   /* Section headers, buttons */
   --fs-lg:  18px;   /* Tool title */
 
-  --w-regular: 400;
-  --w-medium:  600;
-  --w-bold:    700;
-  --w-black:   900;
+  --fw-regular: 400;
+  --fw-medium:  600;
+  --fw-bold:    700;
+  --fw-black:   900;
 
   --s-1: 4px;
   --s-2: 8px;
@@ -93,12 +107,31 @@
   --ui-border: #d9dde3;
   --ui-border-strong: #9aa3ad;
 
-  --focus: rgba(78,121,255,0.35);
+  --app-max: 1600px;
+    --btn-default-bg: #fff;
+  --btn-default-bg2: #fff;
+  --btn-default-border: #e7ebf0;
+  --btn-default-text: #333;
+  --btn-default-hover-bg: #e6e6e6;
+  --btn-default-hover-bg2: #e6e6e6;
 
-  --shadow: 0 10px 30px rgba(16,24,40,0.10);
-  --shadow-soft: 0 2px 10px rgba(16,24,40,0.08);
+  /* ------------------------------- [PRIMARY BUTTON TOKENS] */
 
-  --app-max: 1100px;
+  --btn-primary-bg: #333;
+  --btn-primary-bg2: #333;
+  --btn-primary-border: #333;
+  --btn-primary-text: #fff;
+  --btn-primary-hover-bg: #1a1a1a;
+  --btn-primary-hover-bg2: #1a1a1a;
+
+  /* -------------------------------- [DANGER BUTTON TOKENS] */
+
+  --btn-danger-bg: #c62828;
+  --btn-danger-bg2: #c62828;
+  --btn-danger-border: #c62828;
+  --btn-danger-text: #fff;
+  --btn-danger-hover-bg: #8a1c1c;
+  --btn-danger-hover-bg2: #8a1c1c;
 }
 
 *{ box-sizing:border-box; }
@@ -123,8 +156,6 @@ body{
 
 .app{
   max-width: var(--app-max);
-  margin: 10px auto 24px;
-  padding: 0 var(--s-3);
 }
 
 /* sample-filled text should look normal (not placeholder blue) */
@@ -145,6 +176,7 @@ body{
   grid-template-columns: auto 1fr auto;
   align-items: center;
   gap: var(--s-4);
+  margin: var(--s-3);
 }
 
 .tool-brand{
@@ -164,63 +196,89 @@ body{
   line-height:1.15;
 }
 .tool-title .name{
-  font-size: 18px; /* match Preview Template */
-  font-weight: var(--w-black);
-  letter-spacing: 0.3px;
+  font-size: 24px; /* match Preview Template */
+  font-weight: var(--w-regular);
   color: var(--text);
 }
 
-/* Buttons / pills match Preview Template */
-.pill{
-  font-size: var(--fs-xs);
-  font-weight: var(--w-black);
-  padding: 5px 9px;
-  border-radius: 999px;
-  border: 1px solid #cfd6de;
-  background: #f7f9fc;
-  color: #111;
+.tool-actions {
+  display: flex;
+  gap: var(--s-2);
+  justify-content: center;
+  flex-wrap: wrap;
 }
 
-.btn{
-  font-family: var(--font-family);
+/* --------------------------------------- [DEFAULT BUTTONS] */
+
+.button-default {
+  background: linear-gradient(var(--btn-default-bg), var(--btn-default-bg2));
+  border: 1.5px solid var(--btn-default-border);
+  color: var(--btn-default-text);
+  text-decoration: none;
+  border-radius: var(--radius-md);
+  box-shadow: var(--shadow-soft);
+  cursor: pointer;
+  font-family: var(--font);
   font-size: var(--fs-sm);
-  font-weight: 800;
-  padding: 9px 11px;
-  border: 1px solid #cfd6de;
-  background: linear-gradient(#ffffff, #f5f7fa);
-  border-radius: 10px;
-  cursor:pointer;
-  box-shadow: 0 1px 0 rgba(16,24,40,0.03);
-  transition: background 120ms ease, border-color 120ms ease, transform 80ms ease;
+  font-weight: var(--fw-bold);
+  padding: var(--s-2) var(--s-3);
+  transition: background 120ms, border-color 120ms, transform 80ms;
+  white-space: nowrap;
 }
-.btn:hover{ background: linear-gradient(#ffffff, #eef2f6); }
-.btn:active{ transform: translateY(1px); }
-.btn:focus{
-  outline:none;
+
+.button-default:hover {
+  background: linear-gradient(var(--btn-default-hover-bg), var(--btn-default-hover-bg2));
+  border-color: var(--btn-default-border);
+}
+
+.button-default.toggleBtn.active {
+  background: linear-gradient(var(--btn-primary-bg), var(--btn-primary-bg2));
+  border: 1.5px solid var(--btn-primary-border);
+  color: var(--btn-primary-text);
+}
+
+/* ---------------------------------------- [PRIMARY BUTTON] */
+
+.button-default.primary {
+  background: linear-gradient(var(--btn-primary-bg), var(--btn-primary-bg2));
+  border: 1.5px solid var(--btn-primary-border);
+  color: var(--btn-primary-text);
+}
+
+.button-default.primary:hover {
+  background: linear-gradient(var(--btn-primary-hover-bg), var(--btn-primary-hover-bg2));
+  border-color: var(--btn-primary-border);
+}
+
+/* ---------------------------------------- [DANGER BUTTONS] */
+
+.button-default.danger {
+  background: linear-gradient(var(--btn-danger-bg), var(--btn-danger-bg2));
+  border: 1.5px solid var(--btn-danger-border);
+  color: var(--btn-danger-text);
+}
+
+.button-default.danger:hover {
+  background: linear-gradient(var(--btn-danger-hover-bg), var(--btn-danger-hover-bg2));
+  border-color: var(--btn-danger-border);
+}
+
+
+.button-default:active {
+  transform: translateY(1px);
+}
+
+.button-default:focus {
+  outline: none;
   box-shadow: 0 0 0 3px var(--focus), 0 1px 0 rgba(16,24,40,0.03);
   border-color: #7aa0ff;
-}
-.btn:disabled{ opacity:0.6; cursor:not-allowed; transform:none; }
-
-.btn.primary{
-  background: linear-gradient(#1a1a1a, #000);
-  color:#fff;
-  border-color:#111;
-  box-shadow: var(--shadow-soft);
-}
-.btn.primary:hover{ background: linear-gradient(#0f0f0f, #000); }
-
-/* Header actions row (match Preview) */
-.tool-actions{
-  display:flex;
-  gap: var(--s-2);
-  align-items:center;
 }
 
 /* ---------- Controls (screen-only, match Preview inset) ---------- */
 .controls{
   display:block;
-  margin: 10px 0 0px; /* bottom margin removed so the box padding is the only gap */
+  margin: var(--s-3)
+
   padding: 0;
 }
 
@@ -242,23 +300,24 @@ body{
   text-transform: uppercase;
   text-align: center;
   color: #111;
-
-  margin: 0 0 4px;
 }
 
 /* ---------- Quick Actions (Autofill + Date buttons container) ---------- */
-.quick-actions-box{
-  width: 100%;
-  max-width: calc(
-    5.8in + (2 * var(--side-width)) + (2 * var(--side-gap))
-  );
-  margin: 0 auto;
 
+.btn-row {
+  display: flex;
+  gap: var(--s-2);
+  justify-content: center;
+  flex-wrap: wrap;
+}
+
+.quick-actions-box{
+  width: auto;
+  margin: var(--s-3);
   padding: var(--s-3);
   display: flex;
   flex-direction: column;
   gap: var(--s-2);
-
   background: var(--card);
   border: 1px solid #e3e6eb;
   border-radius: var(--radius-lg);
@@ -268,7 +327,6 @@ body{
 /* status line (kept, just styled) */
 .controls-meta{
   font-size: var(--fs-xs);
-  font-weight: 800;
   letter-spacing: 0.10em;
   text-transform: uppercase;
   color: var(--muted);
@@ -285,7 +343,7 @@ body{
 
 .controls-buttons .btn-row{
   display:flex;
-  gap: var(--s-2);
+  gap: var(--s-3);
   justify-content:center;
   flex-wrap:wrap;
 }
@@ -310,9 +368,8 @@ body{
 
   margin: 0 auto;
 
-  /* ✅ IMPORTANT:
-     Remove top padding so the gap does NOT stack with .controls margin */
-  padding: 0 var(--outer-pad) var(--outer-pad);
+  /* Only bottom padding, no left/right, so gap is exactly 12px */
+  padding: 0 0 var(--outer-pad) 0;
 
   /* ✅ Screen-only: pull the envelope preview up by 12px to remove the "double gap" look */
   margin-top: -12px;
@@ -326,6 +383,7 @@ body{
   display:flex;
   flex-direction:column;
   gap:8px;
+  margin-top: var(--s-3);
 
   height: 8.1in;
   max-height: 8.1in;
@@ -344,19 +402,25 @@ body{
   font-size: var(--fs-xs);
   letter-spacing:0.12em;
   text-align:center;
-  margin-bottom:4px;
+  margin-bottom:var(--s-3);
   color: #111;
 }
 
-/* Driver toggle row = 2 equal columns */
+/* Let the driver list use leftover space in the fixed-height card */
 .driver-grid{
-  display:flex;
-  flex-direction:column;
-  gap:8px;
-
-  /* IMPORTANT: lets the list use remaining space and scroll correctly */
   flex: 1 1 auto;
-  min-height: 0;
+  min-height: 0;   /* CRITICAL for scrolling inside flex */
+}
+
+/* Scroll ONLY the names */
+#driverList{
+  flex: 1 1 auto;  /* take remaining height */
+  min-height: 0;   /* CRITICAL */
+  overflow-y: auto;
+  overflow-x: hidden;
+
+  /* Optional: remove your max-height so it uses remaining space */
+  max-height: none;
 }
 
 .driver-mode{
@@ -366,30 +430,21 @@ body{
   flex: 0 0 auto;
 }
 
-/* Toggle uses pill styling (mode selector, not an action button) */
-.driver-mode .mode{
-  width:100%;
-  font-family: var(--font-family);
-  font-size: var(--fs-xs);
-  font-weight: var(--w-black);
-  padding: 7px 10px;
-  border-radius: 999px;
-  border: 1px solid #cfd6de;
-  background: #f7f9fc;
-  color: #111;
-  cursor: pointer;
-  box-shadow: 0 1px 0 rgba(16,24,40,0.03);
-  transition: background 120ms ease, border-color 120ms ease, transform 80ms ease;
-  text-align: center;
+/* Active toggle hover should use PRIMARY hover colors */
+.driver-mode .button-default.active:hover{
+  background: linear-gradient(var(--btn-primary-hover-bg), var(--btn-primary-hover-bg2));
+  border-color: var(--btn-primary-border);
+  color: var(--btn-primary-text);
 }
 
-.driver-mode .mode:hover{
-  background: #eef2f6;
+/* Toggle buttons: active should look like primary */
+.driver-mode .button-default.active{
+  background: linear-gradient(var(--btn-primary-bg), var(--btn-primary-bg2));
+  border: 1.5px solid var(--btn-primary-border);
+  color: var(--btn-primary-text);
+  box-shadow: var(--shadow-soft);
 }
 
-.driver-mode .mode:active{
-  transform: translateY(1px);
-}
 
 .driver-mode .mode:focus{
   outline: none;
@@ -397,19 +452,13 @@ body{
   border-color: #7aa0ff;
 }
 
-/* Active pill matches your black/white primary style */
-.driver-mode .mode.active{
-  background: linear-gradient(#1a1a1a, #000);
-  color: #fff;
-  border-color: #111;
-  box-shadow: var(--shadow-soft);
-}
-
-/* Driver list = vertical column; scrolls ONLY if it exceeds available height */
 #driverList{
   display: flex;
   flex-direction: column;
   gap: 8px;
+
+  /* Set a max-height so it will scroll */
+  max-height: auto; /* Adjust as needed for your layout */
 
   overflow-y: auto;
   overflow-x: hidden;
@@ -427,25 +476,12 @@ body{
   );
 }
 
-#driverList::-webkit-scrollbar{
-  display: none; /* Chrome, Safari, Edge */
-}
-
-/* Driver buttons = identical to bus buttons */
-#driverList .driver-btn{
-  width: 100%;
-  min-width: 0;
-  box-sizing: border-box;
-  text-align: center;
-  white-space: nowrap;
-}
-
 /* All side buttons share the same base look */
 .bus-btn,
 .driver-btn{
   font-family: var(--font-family);
   font-size: var(--fs-sm);
-  font-weight: 800;
+  font-weight: var(--fw-bold);
   padding: 9px 11px;
   border: 1px solid #cfd6de;
   background: linear-gradient(#ffffff, #f5f7fa);
@@ -499,8 +535,8 @@ body{
   width:5.8in;
   height:8.1in;
   padding: var(--pad);
-  margin: 0;
-  overflow: hidden;
+  margin-top: var(--s-3);
+  overflow:visible;
   position:relative;
   background: transparent;
 }
@@ -722,6 +758,32 @@ input:focus{ outline:none; }
   margin-top:0.02in;
 }
 
+/* Make driver buttons look like default buttons */
+.driver-btn{
+  background: linear-gradient(var(--btn-default-bg), var(--btn-default-bg2));
+  border: 1.5px solid var(--btn-default-border);
+  color: var(--btn-default-text);
+
+  border-radius: var(--radius-md);
+  box-shadow: var(--shadow-soft);
+  cursor: pointer;
+
+  font-size: var(--fs-sm);
+  font-weight: var(--fw-bold);
+  padding: var(--s-2) var(--s-3);
+
+  width: 100%;
+  text-align: center;
+  white-space: nowrap;
+
+  transition: background 120ms, border-color 120ms, transform 80ms;
+}
+
+.driver-btn:hover{
+  background: linear-gradient(var(--btn-default-hover-bg), var(--btn-default-hover-bg2));
+  border-color: var(--btn-default-border);
+}
+
 .note-line{
   font-family: var(--mono);
   font-size: 0.13in;
@@ -761,6 +823,13 @@ input:focus{ outline:none; }
   background-image: none !important;
 }
 .show-envelope-white .panel { background: transparent; }
+
+.driver-mode .button-default.active{
+  background: linear-gradient(var(--btn-primary-bg), var(--btn-primary-bg2));
+  border: 1.5px solid var(--btn-primary-border);
+  color: var(--btn-primary-text);
+  box-shadow: var(--shadow-soft);
+}
 
 /* Print rules */
 @media print{
@@ -810,6 +879,34 @@ input:focus{ outline:none; }
     background: transparent !important;
   }
 }
+
+/* Fixed card stays fixed */
+.side{
+  height: 8.1in;
+  max-height: 8.1in;
+  overflow: hidden;
+  display: flex;
+  flex-direction: column;
+}
+
+/* Make the wrapper and list able to shrink inside the fixed height */
+.driver-grid{
+  flex: 1 1 auto;
+  min-height: 0;          /* CRITICAL */
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+}
+
+/* Scroll ONLY the names */
+#driverList{
+  flex: 1 1 auto;         /* take remaining space */
+  min-height: 0;          /* CRITICAL */
+  overflow-y: auto;       /* mouse wheel scroll */
+  overflow-x: hidden;
+}
+
+
   </style>
 </head>
 <body class="show-envelope">
@@ -834,20 +931,16 @@ input:focus{ outline:none; }
   </div>
 
   <div class="tool-actions">
-    <button class="btn" type="button" onclick="loadFromSheet()">Load</button>
-    <button class="btn" type="button" onclick="saveToSheet()">Save</button>
-    <button class="btn" type="button" onclick="deleteEnvelope()" id="deleteEnvelopeBtn" disabled>Delete</button>
-    <button class="btn" type="button" onclick="clearAll()">Clear</button>
-    <button class="btn" type="button" onclick="safePrint()">Print</button>
-    <button class="btn" type="button" onclick="toggleEnvelope()">Yellow Env</button>
-    <button class="btn" type="button" onclick="toggleEnvelopeWhite()">White Env</button>
-    <button class="btn" type="button" onclick="goHome()">Home</button>
+    <button class="button-default primary" type="button" onclick="loadFromSheet()">Load</button>
+    <button class="button-default primary" type="button" onclick="saveToSheet()">Save</button>
+    <button class="button-default danger" type="button" onclick="deleteEnvelope()" id="deleteEnvelopeBtn" disabled>Delete</button>
+    <button class="button-default" type="button" onclick="clearAll()">Clear</button>
+    <button class="button-default" type="button" onclick="safePrint()">Print</button>
+    <button class="button-default" type="button" onclick="toggleEnvelope()">Yellow Env</button>
+    <button class="button-default" type="button" onclick="toggleEnvelopeWhite()">White Env</button>
+    <button class="button-default" type="button" onclick="goHome()">Home</button>
   </div>
 </header>
-
-
-    <div class="controls screen-only">
-      <div class="controls-meta">Paper A5 · Scale Default · Margins Default</div>
 
 <div class="quick-actions-box">
 
@@ -855,9 +948,9 @@ input:focus{ outline:none; }
   <div class="quick-actions-section">
     <div class="quick-actions-label">Autofill</div>
     <div class="btn-row">
-      <button class="btn" type="button" onclick="loadAutofill1()">Kickapoo Trip</button>
-<button class="btn" type="button" onclick="loadAutofill2()">Paragon Trip</button>
-<button class="btn" type="button" onclick="loadAutofill5()">MVM Trip</button>
+      <button class="button-default" type="button" onclick="loadAutofill1()">Kickapoo Trip</button>
+    <button class="button-default" type="button" onclick="loadAutofill2()">Paragon Trip</button>
+    <button class="button-default" type="button" onclick="loadAutofill5()">MVM Trip</button>
     </div>
   </div>
 
@@ -865,8 +958,8 @@ input:focus{ outline:none; }
   <div class="quick-actions-section">
     <div class="quick-actions-label">Trip Date</div>
     <div class="btn-row" style="align-items: center;">
-      <input id="tripdate-picker" type="date" onchange="updateTripDate(this.value)" class="btn" style="text-align: center;">
-      <input id="returndate-picker" type="date" onchange="updateReturnDate(this.value)" class="btn" style="text-align: center; margin-right: 8px;">
+      <input id="tripdate-picker" type="date" onchange="updateTripDate(this.value)" class="button-default" style="text-align: center;">
+      <input id="returndate-picker" type="date" onchange="updateReturnDate(this.value)" class="button-default" style="text-align: center; margin-right: 8px;">
 
     </div>
   </div>
@@ -882,20 +975,20 @@ input:focus{ outline:none; }
 <aside class="side side-left">
   <div class="side-title">BUSES</div>
 
-  <button class="bus-btn bus-charcoal" type="button" onclick="setBus('218', this)">218</button>
-  <button class="bus-btn bus-charcoal" type="button" onclick="setBus('763', this)">763</button>
+  <button class="button-default" type="button" onclick="setBus('218', this)">218</button>
+  <button class="button-default" type="button" onclick="setBus('763', this)">763</button>
 
-  <button class="bus-btn bus-black" type="button" onclick="setBus('470', this)">470</button>
-  <button class="bus-btn bus-yellow" type="button" onclick="setBus('133', this)">133</button>
-  <button class="bus-btn bus-black" type="button" onclick="setBus('506', this)">506</button>
+  <button class="button-default" type="button" onclick="setBus('470', this)">470</button>
+  <button class="button-default" type="button" onclick="setBus('133', this)">133</button>
+  <button class="button-default" type="button" onclick="setBus('506', this)">506</button>
 
-  <button class="bus-btn bus-gold" type="button" onclick="setBus('746', this)">746</button>
-  <button class="bus-btn bus-teal" type="button" onclick="setBus('607', this)">607</button>
+  <button class="button-default" type="button" onclick="setBus('746', this)">746</button>
+  <button class="button-default" type="button" onclick="setBus('607', this)">607</button>
 
-  <button class="bus-btn bus-white" type="button" onclick="setBus('897', this)">897</button>
-  <button class="bus-btn bus-white" type="button" onclick="setBus('898', this)">898</button>
+  <button class="button-default" type="button" onclick="setBus('897', this)">897</button>
+  <button class="button-default" type="button" onclick="setBus('898', this)">898</button>
 
-  <button class="bus-btn bus-red" type="button" onclick="setBus('474', this)">474</button>
+  <button class="button-default" type="button" onclick="setBus('474', this)">474</button>
 </aside>
 
   <div class="page">
@@ -1045,8 +1138,8 @@ input:focus{ outline:none; }
   <div class="driver-grid">
 
     <div class="driver-mode">
-      <button type="button" id="fillDriverBtn" class="mode active" onclick="setDriverMode('driver')">Driver</button>
-      <button type="button" id="fillCoDriverBtn" class="mode" onclick="setDriverMode('codriver')">Co-Driver</button>
+      <button type="button" id="fillDriverBtn" class="button-default active" onclick="setDriverMode('driver')">Driver</button>
+      <button type="button" id="fillCoDriverBtn" class="button-default" onclick="setDriverMode('codriver')">Co-Driver</button>
     </div>
 
     <div id="driverList">
@@ -1117,25 +1210,6 @@ function setDriver(name){
   const targetEl = document.getElementById(driverFillTarget);
   if(targetEl) targetEl.value = name.toUpperCase();
 
-  const buttons = document.querySelectorAll('#driverList .driver-btn');
-
-  if(driverFillTarget === 'driver'){
-    buttons.forEach(b => b.classList.remove('selected-driver'));
-  } else {
-    buttons.forEach(b => b.classList.remove('selected-codriver'));
-  }
-
-  const btn = [...buttons].find(
-    b => b.textContent.trim() === name
-  );
-
-  if(btn){
-    if(driverFillTarget === 'driver'){
-      btn.classList.add('selected-driver');
-    } else {
-      btn.classList.add('selected-codriver');
-    }
-  }
 }
 
 function fillToday(){
@@ -1575,8 +1649,6 @@ function loadFromSheet(){
     alert('⚠️ Google Apps Script URL not configured.');
     return;
   }
-
-  // Fetch all envelopes
   showProgressBar();
   fetch(GOOGLE_APPS_SCRIPT_URL + '?action=envelopes')
   .then(response => response.json())
@@ -1586,81 +1658,211 @@ function loadFromSheet(){
       alert('No saved envelopes found.');
       return;
     }
-    let options = 'Select an envelope to load:\n\n';
-    data.rows.forEach((row, index) => {
-      const dateRaw = row['Trip Date'] || row['tripdate'] || row['Date'] || '';
-      let dayText = '?';
-      let tripDateStr = '?';
-      if (dateRaw) {
-        let d = new Date(dateRaw);
-        if (isNaN(d.getTime()) && typeof dateRaw === 'string' && dateRaw.includes('T')) {
-          d = new Date(dateRaw.split('T')[0]);
-        }
-        if (!isNaN(d.getTime())) {
-          const weekday = d.toLocaleDateString('en-US', { weekday: 'long' });
-          dayText = weekday.charAt(0).toUpperCase() + weekday.slice(1).toLowerCase();
-          tripDateStr = d.toISOString().slice(0, 10);
-        }
-      }
-      const bus = row['Bus #'] || row['busno'] || row['Bus'] || row['bus'] || row['Bus Number'] || row['bus_number'] || '?';
-      const driver = row['Driver'] || row['driver'] || row['Driver Name'] || row['drivername'] || row['DriverName'] || row['driver_name'] || '?';
-      options += `${index + 1}. ${dayText} ${tripDateStr} – ${bus} – ${driver}\n`;
-    });
-    const selection = prompt(options + '\nEnter number (1-' + data.rows.length + '):');;;
-    if(!selection) return;
-    const index = parseInt(selection) - 1;
-    if(index < 0 || index >= data.rows.length){
-      alert('Invalid selection.');
-      return;
-    }
-    const envelope = data.rows[index];
-    function formatDate(val) {
-      if (!val) return '';
-      if (typeof val === 'string' && val.includes('/')) return val;
-      const d = new Date(val);
-      if (isNaN(d.getTime())) return val;
-      const mm = String(d.getMonth() + 1).padStart(2, '0');
-      const dd = String(d.getDate()).padStart(2, '0');
-      const yyyy = d.getFullYear();
-      return `${mm}/${dd}/${yyyy}`;
-    }
-    function formatTime(val) {
-      if (!val) return '';
-      if (typeof val === 'string' && !val.includes('T')) return val;
-      const d = new Date(val);
-      if (isNaN(d.getTime())) return val;
-      let hours = d.getHours();
-      const minutes = String(d.getMinutes()).padStart(2, '0');
-      const ampm = hours >= 12 ? 'PM' : 'AM';
-      hours = hours % 12 || 12;
-      return `${hours}:${minutes} ${ampm}`;
-    }
-    document.getElementById('day').value = envelope['Day'] || '';
-    document.getElementById('tripdate').value = formatDate(envelope['Trip Date']);
-    if(document.getElementById('returndate')){
-      document.getElementById('returndate').value = formatDate(envelope['Return Date'] || envelope['returndate'] || '');
-    }
-    document.getElementById('busno').value = envelope['Bus #'] || '';
-    document.getElementById('driver').value = envelope['Driver'] || '';
-    document.getElementById('codriver').value = envelope['Co-Driver'] || '';
-    document.getElementById('arrivaltime').value = formatTime(envelope['Arrival Time']);
-    document.getElementById('pickup').value = envelope['Pickup'] || '';
-    document.getElementById('destination').value = envelope['Destination'] || '';
-    document.getElementById('contact').value = envelope['Contact'] || '';
-    document.getElementById('phone').value = envelope['Phone'] || '';
-    document.getElementById('startodo').value = envelope['Starting Odometer'] || '';
-    document.getElementById('endodo').value = envelope['Ending Odometer'] || '';
-    document.getElementById('notes1').value = envelope['Notes 1'] || '';
-    document.getElementById('notes2').value = envelope['Notes 2'] || '';
-    document.getElementById('notes3').value = envelope['Notes 3'] || '';
-    loadedEnvelopeID = envelope['Envelope ID'] || envelope['Envelope Id'] || envelope['envelopeID'] || envelope['envelopeId'] || null;
-    updateDeleteButtonState();
-    alert('✅ Envelope loaded successfully!');
+    showEnvelopeSelectModal(data.rows);
   })
   .catch(error => {
     hideProgressBar();
     alert('❌ Error loading from sheet:\n' + error);
   });
+}
+
+// Modal for envelope selection
+function showEnvelopeSelectModal(envelopes) {
+  // Remove existing modal if present
+  const old = document.getElementById('envelope-select-modal');
+  if (old) old.remove();
+
+  // Sort envelopes by date (soonest first)
+  function getDate(row) {
+    const dateRaw = row['Trip Date'] || row['tripdate'] || row['Date'] || '';
+    if (!dateRaw) return new Date(8640000000000000); // far future
+    let d = new Date(dateRaw);
+    if (isNaN(d.getTime()) && typeof dateRaw === 'string' && dateRaw.includes('T')) {
+      d = new Date(dateRaw.split('T')[0]);
+    }
+    return isNaN(d.getTime()) ? new Date(8640000000000000) : d;
+  }
+  envelopes = envelopes.slice().sort((a, b) => getDate(a) - getDate(b));
+
+  // Create modal overlay
+  const overlay = document.createElement('div');
+  overlay.id = 'envelope-select-modal';
+  overlay.style.position = 'fixed';
+  overlay.style.top = 0;
+  overlay.style.left = 0;
+  overlay.style.width = '100vw';
+  overlay.style.height = '100vh';
+  overlay.style.background = 'rgba(0,0,0,0.25)';
+  overlay.style.display = 'flex';
+  overlay.style.alignItems = 'center';
+  overlay.style.justifyContent = 'center';
+  overlay.style.zIndex = 10000;
+
+  // Modal box
+  const modal = document.createElement('div');
+  modal.style.background = '#fff';
+  modal.style.borderRadius = '14px';
+  modal.style.boxShadow = '0 8px 32px rgba(0,0,0,0.18)';
+  modal.style.padding = '32px 24px 24px 24px';
+  modal.style.minWidth = '320px';
+  modal.style.maxWidth = '90vw';
+  modal.style.maxHeight = '80vh';
+  modal.style.overflow = 'auto';
+
+  // Title
+  const title = document.createElement('div');
+  title.textContent = 'Select an envelope to load';
+  title.style.fontFamily = 'var(--font-family)';
+  title.style.fontWeight = '900';
+  title.style.fontSize = '18px';
+  title.style.marginBottom = '18px';
+  modal.appendChild(title);
+
+  // Search box
+  const search = document.createElement('input');
+  search.type = 'text';
+  search.placeholder = 'Search by date, bus, driver...';
+  search.style.width = '100%';
+  search.style.fontSize = '15px';
+  search.style.padding = '8px 10px';
+  search.style.marginBottom = '14px';
+  search.style.border = '1px solid #d9dde3';
+  search.style.borderRadius = '8px';
+  modal.appendChild(search);
+
+  // Dropdown
+  const select = document.createElement('select');
+  select.size = 8;
+  select.style.width = '100%';
+  select.style.fontSize = '15px';
+  select.style.fontFamily = 'Motiva Sans, IBM Plex Sans, Arial, Helvetica, sans-serif';
+  select.style.letterSpacing = '0.5px';
+  select.style.padding = '6px 0';
+  select.style.marginBottom = '18px';
+  select.style.border = '1px solid #d9dde3';
+  select.style.borderRadius = '8px';
+  select.style.background = '#f7f9fc';
+  select.style.cursor = 'pointer';
+
+  function envelopeLabel(row) {
+    const dateRaw = row['Trip Date'] || row['tripdate'] || row['Date'] || '';
+    let dayText = '?';
+    let tripDateStr = '?';
+    if (dateRaw) {
+      let d = new Date(dateRaw);
+      if (isNaN(d.getTime()) && typeof dateRaw === 'string' && dateRaw.includes('T')) {
+        d = new Date(dateRaw.split('T')[0]);
+      }
+      if (!isNaN(d.getTime())) {
+        // Abbreviated weekday (MON, TUE, etc.)
+        const weekday = d.toLocaleDateString('en-US', { weekday: 'short' }).toUpperCase();
+        dayText = weekday;
+        tripDateStr = d.toISOString().slice(0, 10);
+      }
+    }
+    const bus = (row['Bus #'] || row['busno'] || row['Bus'] || row['bus'] || row['Bus Number'] || row['bus_number'] || '?').toString();
+    const driver = (row['Driver'] || row['driver'] || row['Driver Name'] || row['drivername'] || row['DriverName'] || row['driver_name'] || '?').toString();
+    // Pad fields for symmetry: DAY(3) DATE(10) BUS(5) DRIVER(10)
+    const pad = (str, len) => (str + ' '.repeat(len)).slice(0, len);
+    return `${pad(dayText,3)} ${pad(tripDateStr,10)}  ${pad(bus,5)}  ${pad(driver,10)}`;
+  }
+
+  let filtered = envelopes.slice();
+  function renderOptions() {
+    select.innerHTML = '';
+    filtered.forEach((row, idx) => {
+      const opt = document.createElement('option');
+      opt.value = idx;
+      opt.textContent = envelopeLabel(row);
+      select.appendChild(opt);
+    });
+  }
+  renderOptions();
+
+  search.addEventListener('input', function() {
+    const q = search.value.trim().toLowerCase();
+    filtered = envelopes.filter(row => envelopeLabel(row).toLowerCase().includes(q));
+    renderOptions();
+  });
+
+  modal.appendChild(select);
+
+  // Action buttons
+  const btnRow = document.createElement('div');
+  btnRow.style.display = 'flex';
+  btnRow.style.justifyContent = 'flex-end';
+  btnRow.style.gap = '10px';
+
+  const cancelBtn = document.createElement('button');
+  cancelBtn.textContent = 'Cancel';
+  cancelBtn.className = 'btn';
+  cancelBtn.onclick = () => overlay.remove();
+  btnRow.appendChild(cancelBtn);
+
+  const loadBtn = document.createElement('button');
+  loadBtn.textContent = 'Load';
+  loadBtn.className = 'btn primary';
+  loadBtn.disabled = select.selectedIndex === -1;
+  loadBtn.onclick = () => {
+    if (select.selectedIndex === -1) return;
+    const envelope = filtered[select.selectedIndex];
+    overlay.remove();
+    fillEnvelopeFields(envelope);
+  };
+  btnRow.appendChild(loadBtn);
+
+  select.addEventListener('change', () => {
+    loadBtn.disabled = select.selectedIndex === -1;
+  });
+
+  modal.appendChild(btnRow);
+  overlay.appendChild(modal);
+  document.body.appendChild(overlay);
+}
+
+function fillEnvelopeFields(envelope) {
+  function formatDate(val) {
+    if (!val) return '';
+    if (typeof val === 'string' && val.includes('/')) return val;
+    const d = new Date(val);
+    if (isNaN(d.getTime())) return val;
+    const mm = String(d.getMonth() + 1).padStart(2, '0');
+    const dd = String(d.getDate()).padStart(2, '0');
+    const yyyy = d.getFullYear();
+    return `${mm}/${dd}/${yyyy}`;
+  }
+  function formatTime(val) {
+    if (!val) return '';
+    if (typeof val === 'string' && !val.includes('T')) return val;
+    const d = new Date(val);
+    if (isNaN(d.getTime())) return val;
+    let hours = d.getHours();
+    const minutes = String(d.getMinutes()).padStart(2, '0');
+    const ampm = hours >= 12 ? 'PM' : 'AM';
+    hours = hours % 12 || 12;
+    return `${hours}:${minutes} ${ampm}`;
+  }
+  document.getElementById('day').value = envelope['Day'] || '';
+  document.getElementById('tripdate').value = formatDate(envelope['Trip Date']);
+  if(document.getElementById('returndate')){
+    document.getElementById('returndate').value = formatDate(envelope['Return Date'] || envelope['returndate'] || '');
+  }
+  document.getElementById('busno').value = envelope['Bus #'] || '';
+  document.getElementById('driver').value = envelope['Driver'] || '';
+  document.getElementById('codriver').value = envelope['Co-Driver'] || '';
+  document.getElementById('arrivaltime').value = formatTime(envelope['Arrival Time']);
+  document.getElementById('pickup').value = envelope['Pickup'] || '';
+  document.getElementById('destination').value = envelope['Destination'] || '';
+  document.getElementById('contact').value = envelope['Contact'] || '';
+  document.getElementById('phone').value = envelope['Phone'] || '';
+  document.getElementById('startodo').value = envelope['Starting Odometer'] || '';
+  document.getElementById('endodo').value = envelope['Ending Odometer'] || '';
+  document.getElementById('notes1').value = envelope['Notes 1'] || '';
+  document.getElementById('notes2').value = envelope['Notes 2'] || '';
+  document.getElementById('notes3').value = envelope['Notes 3'] || '';
+  loadedEnvelopeID = envelope['Envelope ID'] || envelope['Envelope Id'] || envelope['envelopeID'] || envelope['envelopeId'] || null;
+  updateDeleteButtonState();
+  alert('✅ Envelope loaded successfully!');
 }
 
 function sortDriversAlphabetically(){
@@ -1811,4 +2013,3 @@ function hideProgressBar() {
 
 </body>
 </html>
-
