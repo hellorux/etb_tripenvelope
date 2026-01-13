@@ -176,7 +176,11 @@ body{
   grid-template-columns: auto 1fr auto;
   align-items: center;
   gap: var(--s-4);
-  margin: var(--s-3);
+  max-width: 1200px;
+  margin-left: auto;
+  margin-right: auto;
+  margin-top: var(--s-3);
+  margin-bottom: var(--s-3);
 }
 
 .tool-brand{
@@ -186,20 +190,27 @@ body{
   white-space:nowrap;
 }
 .tool-logo{
-  height: 28px;
+  height: 35.5px; /* match Preview Template */
   width:auto;
 }
 
 .tool-title{
-  display:flex;
-  flex-direction:column;
-  line-height:1.15;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;   /* centers contents vertically as a group */
 }
+
 .tool-title .name{
-  font-size: 24px; /* match Preview Template */
+  height: 35.5px;            /* keep your fixed header height */
+  display: flex;
+  align-items: center;        /* ✅ vertical centering inside 35.5px */
+  justify-content: flex-start;/* ✅ keep left aligned */
+  line-height: 1;             /* prevent weird baseline spacing */
+  font-size: 24px;
   font-weight: var(--w-regular);
   color: var(--text);
 }
+
 
 .tool-actions {
   display: flex;
@@ -312,8 +323,12 @@ body{
 }
 
 .quick-actions-box{
-  width: auto;
-  margin: var(--s-3);
+  width: 100%;
+  max-width: 1200px;
+  margin-left: auto;
+  margin-right: auto;
+  margin-top: var(--s-3);
+  margin-bottom: var(--s-3);
   padding: var(--s-3);
   display: flex;
   flex-direction: column;
@@ -322,6 +337,7 @@ body{
   border: 1px solid #e3e6eb;
   border-radius: var(--radius-lg);
   box-shadow: var(--shadow-soft);
+  justify-content:center;
 }
 
 /* status line (kept, just styled) */
@@ -351,6 +367,7 @@ body{
 /* Each labeled group inside the quick actions box */
 .quick-actions-group{
   display: flex;
+  justify-content:center;
   flex-direction: column;
   gap: 6px;
 }
@@ -402,7 +419,7 @@ body{
   font-size: var(--fs-xs);
   letter-spacing:0.12em;
   text-align:center;
-  margin-bottom:var(--s-3);
+
   color: #111;
 }
 
@@ -936,8 +953,8 @@ input:focus{ outline:none; }
     <button class="button-default danger" type="button" onclick="deleteEnvelope()" id="deleteEnvelopeBtn" disabled>Delete</button>
     <button class="button-default" type="button" onclick="clearAll()">Clear</button>
     <button class="button-default" type="button" onclick="safePrint()">Print</button>
-    <button class="button-default" type="button" onclick="toggleEnvelope()">Yellow Env</button>
-    <button class="button-default" type="button" onclick="toggleEnvelopeWhite()">White Env</button>
+    <button class="button-default" type="button" onclick="toggleEnvelope()">Yellow</button>
+    <button class="button-default" type="button" onclick="toggleEnvelopeWhite()">White</button>
     <button class="button-default" type="button" onclick="goHome()">Home</button>
   </div>
 </header>
